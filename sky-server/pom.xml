@@ -66,6 +66,8 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
+
+        <!--pagehelper: 简化分页代码的编写-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
