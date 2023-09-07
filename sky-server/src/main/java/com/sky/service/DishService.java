@@ -1,13 +1,21 @@
 package com.sky.service;
 
 import com.sky.dto.DishDTO;
-import org.springframework.stereotype.Service;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.result.PageResult;
 
 public interface DishService {
 
     /**
-     * 新增菜品和对应的口味
+     * 新增菜品和品味类型
      * @param dishDTO
      */
     void saveWithFlavor(DishDTO dishDTO);
+
+    /**
+     * 菜品分类查询
+     * @param dishPageQueryDTO
+     * @return
+     */
+    PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
 }
