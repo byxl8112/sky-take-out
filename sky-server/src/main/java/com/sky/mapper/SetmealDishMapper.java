@@ -8,10 +8,9 @@ import java.util.List;
 public interface SetmealDishMapper {
 
     /**
-     * 根据菜品id查询对应的套餐的id
+     * 根据dishId查看setmeal_dish 表中的数据
      * @param dishIds
      * @return
      */
-    //select setmeal_id from setmeal_dish where dish_id in (1,2,3,4)
-    List<Long> getSetmealIdsByDishIds(List<Long> dishIds);
+    List<Long> getSetmealDishByDishId(List<Long> dishIds);
 }
