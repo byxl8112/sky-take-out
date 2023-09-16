@@ -6,8 +6,7 @@ import com.sky.entity.User;
 public interface UserService {
 
     /**
-     * 用户微信登录
-     *
+     * 微信用户登录
      * @param userLoginDTO
      * @return
      */

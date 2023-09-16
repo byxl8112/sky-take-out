@@ -9,8 +9,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper {
 
     /**
-     * 根据openid查询用户
-     *
+     * 查询openid
      * @param openid
      * @return
      */
@@ -18,8 +17,7 @@ public interface UserMapper {
     User getByOpenid(String openid);
 
     /**
-     * 插入新用户
-     *
+     * 插入新数据
      * @param user
      */
     void insert(User user);

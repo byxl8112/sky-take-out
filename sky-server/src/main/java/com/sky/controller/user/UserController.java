@@ -10,6 +10,7 @@ import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.UserLoginVO;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -29,28 +30,20 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService userService;
-
-    //用户端生成jwt令牌
-    @Autowired
     private JwtProperties jwtProperties;
 
+    @Autowired
+    private UserService userService;
 
-    /**
-     * 用户微信登录
-     *
-     * @param userLoginDTO
-     * @return
-     */
     @PostMapping("/login")
     @ApiOperation("微信登录")
-    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
-        log.info("用户微信登录: {}", userLoginDTO.getCode());
+    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
 
-        //微信登录
+        log.info("微信登录用户: {}", userLoginDTO.getCode());
+
         User user = userService.wxLogin(userLoginDTO);
 
-        //生成jwt令牌，注入token
+        //获取token，jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.USER_ID, user.getId());
         String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
@@ -60,8 +53,6 @@ public class UserController {
                 .openid(user.getOpenid())
                 .token(token)
                 .build();
-
         return Result.success(userLoginVO);
     }
-
 }
