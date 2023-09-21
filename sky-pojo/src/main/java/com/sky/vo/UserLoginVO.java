@@ -9,8 +9,8 @@ import java.io.Serializable;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor        //自动生成一个无参构造器
+@AllArgsConstructor       //自动生成一个满参构造器
 public class UserLoginVO implements Serializable {
 
     private Long id;
