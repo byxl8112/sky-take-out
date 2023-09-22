@@ -58,7 +58,7 @@ public interface SetmealService {
     List<Setmeal> list(Setmeal setmeal);
 
     /**
-     * 根据套餐id查询其包含的菜品列表
+     * 根据套餐id查询包含的菜品列表
      * @param id
      * @return
      */

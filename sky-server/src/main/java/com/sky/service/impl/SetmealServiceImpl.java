@@ -206,13 +206,13 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
     /**
-     * 根据套餐id查询其包含的菜品列表
+     * 根据套餐id查询菜品列表
      * @param id
      * @return
      */
     @Override
     public List<DishItemVO> getDishItemById(Long id) {
-        List<DishItemVO> list = setmealMapper.getDishItemBySetmealId(id);
-        return list;
+        List<DishItemVO> dishItemBySetmealId = setmealMapper.getDishItemBySetmealId(id);
+        return dishItemBySetmealId;
     }
 }
