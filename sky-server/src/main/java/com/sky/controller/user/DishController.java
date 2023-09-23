@@ -53,8 +53,9 @@ public class DishController {
         dish.setCategoryId(categoryId);
         dish.setStatus(StatusConstant.ENABLE);
         list = dishService.listWithFlavor(dish);
-        //加入redis中
+        //如果redis中不存在，则加入redis中
         redisTemplate.opsForValue().set(key, list);
+
         return Result.success(list);
     }
 
