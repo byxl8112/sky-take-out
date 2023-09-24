@@ -31,6 +31,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     /**
      * 添加到购物车
+     *
      * @param shoppingCartDTO
      */
     @Override
@@ -46,23 +47,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
 
         //如果此数据在购物车已经存在，则数量加一
-        if(list != null && list.size() > 0){
+        if (list != null && list.size() > 0) {
             //查询到的只有0或一条数据
             ShoppingCart cart = list.get(0);
             cart.setNumber(cart.getNumber() + 1);
             //update shopping_cart set number = ? where id = ?
             shoppingCartMapper.updateNumberById(cart);
-        }else {
+        } else {
             //如果不存在，则需要插入一条数据，且需要判断此数据是菜品还是套餐
             Long dishId = shoppingCartDTO.getDishId();
-            if (dishId != null){
+            if (dishId != null) {
                 //说明此数据是菜品，添加到购物车
                 Dish dish = dishMapper.getById(dishId);
                 //添加到购物车
                 shoppingCart.setName(dish.getName());
                 shoppingCart.setImage(dish.getImage());
                 shoppingCart.setAmount(dish.getPrice());
-            } else{
+            } else {
                 //说明此数据是套餐，添加到购物车
                 Long setmealId = shoppingCart.getSetmealId();
                 Setmeal setmeal = setmealMapper.getById(setmealId);
@@ -75,8 +76,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCart.setCreateTime(LocalDateTime.now());
             //插入数据
             shoppingCartMapper.insert(shoppingCart);
-
         }
+    }
 
+    /**
+     * 查看购物车
+     * @return
+     */
+    @Override
+    public List<ShoppingCart> showShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .userId(userId)
+                .build();
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        return list;
+    }
+
+    /**
+     * 清空购物车
+     */
+    @Override
+    public void cleanShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.deleteByUserId(userId);
     }
 }
