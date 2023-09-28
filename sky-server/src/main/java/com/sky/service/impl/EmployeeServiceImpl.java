@@ -106,6 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         // select * from employee where xxx limit 0,10
         //开始分页查询: PageHelper.startPage(页码, 每页记录数)
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        //查询出employee数据库中符合条件的数据
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
 
         long total = page.getTotal();
