@@ -61,13 +61,13 @@ public class ReportServiceImpl implements ReportService {
 
         }
 
-        //封装到 VO 中
-        TurnoverReportVO turnoverReportVO = TurnoverReportVO
+        //封装到 VO 中返回
+
+
+        return TurnoverReportVO
                 .builder()
                 .dateList(StringUtils.join(dateList, ","))
                 .turnoverList(StringUtils.join(turnoverList, ","))
-                .build();
-
-        return turnoverReportVO;
+                .build();;
     }
 }
