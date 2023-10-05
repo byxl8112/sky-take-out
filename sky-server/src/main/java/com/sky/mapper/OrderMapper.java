@@ -47,9 +47,9 @@ public interface OrderMapper {
 
     /**
      * 根据订单状态分别查询出待接单、待派送、派送中的订单数量
-     * @param toBeConfirmed
+     * @param status status
      * @return
      */
     @Select("select count(id) from orders where status = #{status}")
-    Integer countStatus(Integer toBeConfirmed);
+    Integer countStatus(Integer status);
 }

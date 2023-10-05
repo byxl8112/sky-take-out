@@ -445,6 +445,7 @@ public class OrderServiceImpl implements OrderService {
                 //将共同字段赋值到OrdersVO
                 OrderVO orderVO = new OrderVO();
                 BeanUtils.copyProperties(orders, orderVO);
+                //获取菜品信息字符串
                 String orderDishes = getOrderDishesStr(orders);
 
                 //将订单菜品信息封装到orderVO中，并添加到orderVOList
@@ -543,7 +544,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 取消订单
+     * 商家取消订单
      * @param ordersCancelDTO
      */
     public void cancel(OrdersCancelDTO ordersCancelDTO) throws Exception {
@@ -579,7 +580,7 @@ public class OrderServiceImpl implements OrderService {
         //根据id查询订单
         Orders ordersDB = orderMapper.getById(id);
 
-        //校验订单是否存在，并且状态为3
+        //校验订单是否存在，并且状态为3 (已接单)
         if (ordersDB == null || !ordersDB.getStatus().equals(Orders.CONFIRMED)){
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }

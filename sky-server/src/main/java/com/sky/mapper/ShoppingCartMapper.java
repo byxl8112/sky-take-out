@@ -43,7 +43,7 @@ public interface ShoppingCartMapper {
     void deleteByUserId(Long userId);
 
     /**
-     * 将购物车
+     * 将购物车批量插入数据库中
      * @param shoppingCartList
      */
     void insertBatch(List<ShoppingCart> shoppingCartList);
