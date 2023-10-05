@@ -627,6 +627,9 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
 
+        /*
+         * 向浏览器推送消息
+         */
         Map map = new HashMap();
         map.put("type", 2);  //1表示来单提醒，2表示客户催单
         map.put("orderId", id);
