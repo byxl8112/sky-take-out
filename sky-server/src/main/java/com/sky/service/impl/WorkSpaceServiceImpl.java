@@ -1,15 +1,22 @@
 package com.sky.service.impl;
 
+import com.sky.constant.StatusConstant;
 import com.sky.entity.Orders;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.OrderMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.WorkSpaceService;
 import com.sky.vo.BusinessDataVO;
+import com.sky.vo.DishOverViewVO;
+import com.sky.vo.OrderOverViewVO;
+import com.sky.vo.SetmealOverViewVO;
 import jdk.net.SocketFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +27,10 @@ public class WorkSpaceServiceImpl implements WorkSpaceService {
     private OrderMapper orderMapper;
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private DishMapper dishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
 
     /**
      * 根据时间段统计营业数据
@@ -80,5 +90,111 @@ public class WorkSpaceServiceImpl implements WorkSpaceService {
                 .build();
 
         return businessDataVO;
+    }
+
+    /**
+     * 查询订单管理数据
+     * @return
+     */
+    @Override
+    public OrderOverViewVO getOrderOverView() {
+        /**
+         * 待接单
+         * 待派送
+         * 已完成
+         * 已取消
+         * 全部订单
+         */
+
+        Map map = new HashMap();
+        map.put("begin", LocalDateTime.now().with(LocalTime.MIN));
+        map.put("end", LocalDateTime.now().with(LocalTime.MAX));
+
+        //待接单
+        map.put("status", Orders.TO_BE_CONFIRMED);
+        Integer waitingOrders = orderMapper.countByMap(map);
+
+        //待派送
+        map.put("status", Orders.CONFIRMED);
+        Integer deliveredOrders = orderMapper.countByMap(map);
+
+        //已完成
+        map.put("status", Orders.COMPLETED);
+        Integer completedOrders = orderMapper.countByMap(map);
+
+        //已取消
+        map.put("status", Orders.CANCELLED);
+        Integer canceledOrders = orderMapper.countByMap(map);
+
+        //全部订单
+        map.put("status", null);
+        Integer allOrders = orderMapper.countByMap(map);
+
+        //封装VO
+        OrderOverViewVO orderOverViewVO = OrderOverViewVO.builder()
+                .waitingOrders(waitingOrders)
+                .deliveredOrders(deliveredOrders)
+                .completedOrders(completedOrders)
+                .cancelledOrders(canceledOrders)
+                .allOrders(allOrders)
+                .build();
+
+        return orderOverViewVO;
+    }
+
+    /**
+     * 查询菜品总览
+     * @return
+     */
+    @Override
+    public DishOverViewVO getDishOverView() {
+        /**
+         * 已起售数量 : sold
+         * 已停售数量 : discontinued
+         */
+        Map map = new HashMap();
+        //查询已起售菜品数量
+        map.put("status", StatusConstant.ENABLE);
+        Integer sold = dishMapper.countByMap(map);
+
+        //查询已停售菜品数量
+        map.put("status", StatusConstant.DISABLE);
+        Integer discontinued = dishMapper.countByMap(map);
+
+        //封装VO
+        DishOverViewVO dishOverViewVO = DishOverViewVO.builder()
+                .sold(sold)
+                .discontinued(discontinued)
+                .build();
+
+        return dishOverViewVO;
+    }
+
+    /**
+     * 查询套餐总览
+     * @return
+     */
+    @Override
+    public SetmealOverViewVO getSetmealOverView() {
+        /**
+         * 已起售数量 : sold
+         * 已停售数量 : discontinued
+         */
+        Map map = new HashMap();
+
+        //查询已起售套餐数量
+        map.put("status", StatusConstant.ENABLE);
+        Integer sold = setmealMapper.countByMap(map);
+
+        //查询已停售套餐数量
+        map.put("status", StatusConstant.DISABLE);
+        Integer discontinued = setmealMapper.countByMap(map);
+
+        SetmealOverViewVO setmealOverViewVO = SetmealOverViewVO.builder()
+                .sold(sold)
+                .discontinued(discontinued)
+                .build();
+
+        return setmealOverViewVO;
     }
 }
